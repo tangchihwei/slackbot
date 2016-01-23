@@ -25,7 +25,10 @@ class MessageDispatcher(object):
     def dispatch_msg(self, msg):
         category = msg[0]
         msg = msg[1]
-        text = msg['text']
+        if 'text' in msg:
+            text = msg['text']
+        elif 'attachments' in msg:
+            text = msg['attachments'][0]['pretext']
         responded = False
         for func, args in self._plugins.get_plugins(category, text):
             if func:
